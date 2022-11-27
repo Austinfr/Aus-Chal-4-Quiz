@@ -3,10 +3,20 @@
 .highScoresNTime{
     margin: 0;
     padding: 0;
+    font-size: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
+
+.start{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 2%;
+}
+
 
 .scoreBoard{
 
