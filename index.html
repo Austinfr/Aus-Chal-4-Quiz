@@ -6,16 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./assets/style.css"/>
-    <script src="./assets/script.js"></script>
 </head>
 <body>
 
-    <div class="highScoresNTime"><a href="#">View Highscores</a></div>
-    <!--Main question and highscore display-->
-    <main class="start">
+    <div class="highScoresNTime"><a>View Highscores</a><span class="time"></span></div>
+    <!-- Main question and highscore display -->
+    <div class="start">
         <h1>This is a quick javscript quiz</h1>
-        <button>Begin quiz</button>
-    </main>
+        <button id="startButton">Begin quiz</button>
+    </div>
+
+    <div class="question">
+
+    </div>
+
+    <div class="end" hidden>
+        <h1>This is your final highscore <span class="highscore">0</span></h1>
+    </div>
+    
+    <script src="./assets/script.js"></script>
     
 </body>
 </html>
