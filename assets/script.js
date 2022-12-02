@@ -38,6 +38,59 @@
 
 */
 
+const question1 = {
+    question: "Which html tag does javascript go inside?",
+    optionOne: "<javascript>",
+    optionTwo: "<script>",
+    optionThree: "<js>",
+    optionFour: "<scripting>",
+    correct: 2
+}
+const question2 = {
+    question: "What function is used to display a message popup?",
+    optionOne: "alert()",
+    optionTwo: "Math.random()",
+    optionThree: "popup()",
+    optionFour: "message()",
+    correct: 1
+}
+const question3 = {
+    question: "How do you create a function in javascript?",
+    optionOne: "function = myFunction()",
+    optionTwo: "function:myFunction()",
+    optionThree: "function myFunction()",
+    optionFour: "function()",
+    correct: 3
+}
+const question4 = {
+    question: "Which is the correct way to write a javascript array?",
+    optionOne: "var trees = 1 = (\"oak\"),2 = (\"birch\"),3 = (\"aspin\")",
+    optionTwo: "var trees = \"oak\",\"birch\",\"aspin\"",
+    optionThree: "var trees = (1:\"oak\",2:\"birch\",3:\"aspin\")",
+    optionFour: "var trees = [\"oak\", \"birch\", \"aspin\"]",
+    correct: 4
+}
+const question5 = {
+    question: "How do you compare type and variable equality in javascript?",
+    optionOne: "=",
+    optionTwo: "===",
+    optionThree: "==",
+    optionFour: "====",
+    correct: 2
+}
+const question6 = {
+    question: "How do you declare a varaible in javascript?",
+    optionOne: "var i = 50",
+    optionTwo: "int i = 50",
+    optionThree: "variable 1 = 50",
+    optionFour: "i = 50",
+    correct: 1
+}
+
+var questions = [question1, question2, question3, question4, question5, question6];
+
+////////////////////////////////////////////////////
+
 //variables
 var highScoreButton = document.querySelector(".highScoresNTime > a");
 var sButton = document.querySelector("#startButton");
@@ -48,10 +101,19 @@ function clearPage(){
     document.body.innerHTML = '';
 }
 
+function refillQuestions(){
+    questions = [question1, question2, question3, question4, question5, question6];
+}
+
 function beginQuiz(event){
     event.preventDefault();
     document.querySelector(".start").innerHTML = '';
     console.log("cleared");
+
+}
+
+function loadNextQuestion(){
+
 }
 
 function gotoHighscores(){
