@@ -14,7 +14,9 @@ a{
 }
 
 #start,
-#question{
+#question,
+#end,
+#highScores{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <div id="timeBar"><a>View Highscores</a><span class="time"></span></div>
+    <div id="timeBar"><a>View Highscores</a><span class="time">0</span></div>
     <!-- Main question and highscore display -->
     <div id="start">
         <h1>This is a quick javscript quiz</h1>
@@ -20,11 +20,16 @@
 
     </div>
 
-    <div id="end" style="display:none">
-        <h1>This is your final highscore <span class="highscore">0</span></h1>
+    <div id="end" style="display: none;">
+        <h1>All done!</h1>
+        <p>Your highscore is <span class="highscore">0</span></p>
+        <label for="user">Enter your name:</label>
+        <input type="text" name="user"/>
+        <input type="submit" value="Sumbit"/>
+
     </div>
 
-    <div id="highScores" style="display:none">
+    <div id="highScores" style="display: none;">
         
     </div>
     

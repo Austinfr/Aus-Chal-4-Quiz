@@ -1,4 +1,5 @@
-/*  Put Questions here:
+/*  
+    It makes it really easy to cheat but I put the questions here for referance:
 
     Which html tag does javascript go inside?
     1.<javascript>
@@ -89,22 +90,26 @@ const question6 = {
 
 var questions = [question1, question2, question3, question4, question5, question6];
 
-////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 //variables
+//a variable for each section of content I'd like to work with
 var highScoreButton = document.querySelector("#timeBar > a");
+var timeCounter = document.querySelector("#timeBar > .time");
 var sButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#start");
 var questionSection = document.querySelector("#question");
 var endScreen = document.querySelector("#end");
 var highscoreScreen = document.querySelector("#highScores");
 
+var timerId = null;
+var timeLeft = 75;
+
 //functions
+//hides everything
 function clearPage(){
     for(let elem of document.body.children){
-        if(!(elem.getAttribute("id") === "highScores")){
-            elem.style.display = "none";
-        }
+        elem.setAttribute("style", "display: none");
     }
 }
 
@@ -112,22 +117,41 @@ function refillQuestions(){
     questions = [question1, question2, question3, question4, question5, question6];
 }
 
+//shows or hides the start section depending on what it currently is
+//if hidden it shows
 function hideShowStart(){
-    startScreen.hasAttribute("style") ? startScreen.removeAttribute("style") : startScreen.style.display = "none";
+    startScreen.hasAttribute("style") ? startScreen.removeAttribute("style") : startScreen.setAttribute("style", "display: none");
 }
 
+function startTimer(){
+    timerId = setInterval(function(){
+        if(timeLeft > 0){
+            timeCounter.textContent = timeLeft--;
+        }else{
+            enterHighScore();
+        }
+    }, 1000);
+}
+
+function timerPause(){
+    clearInterval(timerId);
+}
+
+//This is what kicks everything off
 function beginQuiz(event){
     event.preventDefault();
     hideShowStart();
-    console.log("cleared");
+    startTimer();
+    loadNextQuestion();
 
 }
 
 function loadNextQuestion(){
-    //choose question
+    //chooses a question from the list and then removes it
     let lastQuestion = questions.length <= 1;
     let index = Math.random() * (questions.length - 1);
     let q = lastQuestion ? questions[0] : questions[index];
+    //moves the question out of the array if it's the last one
     if(!lastQuestion){
         let tempQ = questions[0];
         questions[0] = q;
@@ -135,7 +159,7 @@ function loadNextQuestion(){
         questions.shift();
     }
 
-    //first reset
+    //first reset inner content so I can set it to what I want
     questionSection.innerHTML = "";
     //create the html to put in
     let qAsked = document.createElement("h1");
@@ -144,21 +168,50 @@ function loadNextQuestion(){
     let option2 = document.createElement("button");
     let option3 = document.createElement("button");
     let option4 = document.createElement("button");
+    //set the variable content to fit the question
     qAsked.textContent = q.question;
     option1.textContent = q.optionOne;
     option2.textContent = q.optionTwo;
     option3.textContent = q.optionThree;
     option4.textContent = q.optionFour;
+    //wrap the questions in a group
+    qGroup.appendChild(option1);
+    qGroup.appendChild(option2);
+    qGroup.appendChild(option3);
+    qGroup.appendChild(option4);
+    //assign either the class correct or wrong depending on the answer
+    for(let x = 0; x < 4; x++){
+        if(x == q.correct - 1){
+            qGroup.childNodes[x].className = "correct";
+        }else{
+            qGroup.childNodes[x].className = "wrong";
+        }
+    }
 
 
     //add the logic
     qGroup.addEventListener("click", function(){
         event.preventDefault();
+        if(event.target.localName === "button"){
+            if(event.target.className === "correct"){
 
+            }
+        }
     });
 }
 
-function gotoHighscores(){
+function enterHighScore(){
+    timerPause();
+    clearPage();
+    timeLeft = 75;
+    endScreen.removeAttribute("style");
+    endScreen.querySelector(".highscore").textContent = timeLeft;
+
+}
+
+function gotoHighscores(event){
+    event.preventDefault();
+    timerPause();
     clearPage();
     highscoreScreen.removeAttribute("style");
 }
