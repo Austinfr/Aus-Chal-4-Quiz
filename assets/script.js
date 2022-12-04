@@ -92,15 +92,20 @@ var questions = [question1, question2, question3, question4, question5, question
 ////////////////////////////////////////////////////
 
 //variables
-var highScoreButton = document.querySelector("#highScoresNTime > a");
+var highScoreButton = document.querySelector("#timeBar > a");
 var sButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#start");
 var questionSection = document.querySelector("#question");
 var endScreen = document.querySelector("#end");
+var highscoreScreen = document.querySelector("#highScores");
 
 //functions
 function clearPage(){
-    document.body.innerHTML = '';
+    for(let elem of document.body.children){
+        if(!(elem.getAttribute("id") === "highScores")){
+            
+        }
+    }
 }
 
 function refillQuestions(){
@@ -144,7 +149,7 @@ function loadNextQuestion(){
     option2.textContent = q.optionTwo;
     option3.textContent = q.optionThree;
     option4.textContent = q.optionFour;
-    
+
 
     //add the logic
     qGroup.addEventListener("click", function(){
