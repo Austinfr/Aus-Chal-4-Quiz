@@ -23,10 +23,11 @@ a{
 }
 
 .answerButton{
-
+    background-color: rgba(138, 43, 226, 0.9);
     
 }
 
 .answerButton:hover{
+    background-color: rgba(138, 43, 226, 0.6);
 
 }
