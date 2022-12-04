@@ -149,8 +149,9 @@ function beginQuiz(event){
 function loadNextQuestion(){
     //chooses a question from the list and then removes it
     let lastQuestion = questions.length <= 1;
-    let index = Math.random() * (questions.length - 1);
+    let index = Math.floor(Math.random() * (questions.length - 1));
     let q = lastQuestion ? questions[0] : questions[index];
+    console.log(lastQuestion + " ," + index + " ," + q);
     //moves the question out of the array if it's the last one
     if(!lastQuestion){
         let tempQ = questions[0];
