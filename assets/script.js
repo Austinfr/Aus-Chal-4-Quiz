@@ -133,8 +133,24 @@ function loadNextQuestion(){
     //first reset
     questionSection.innerHTML = "";
     //create the html to put in
-    document.createElement("h1");
-    document.createElement();
+    let qAsked = document.createElement("h1");
+    let qGroup = document.createElement("div");
+    let option1 = document.createElement("button");
+    let option2 = document.createElement("button");
+    let option3 = document.createElement("button");
+    let option4 = document.createElement("button");
+    qAsked.textContent = q.question;
+    option1.textContent = q.optionOne;
+    option2.textContent = q.optionTwo;
+    option3.textContent = q.optionThree;
+    option4.textContent = q.optionFour;
+    
+
+    //add the logic
+    qGroup.addEventListener("click", function(){
+        event.preventDefault();
+
+    });
 }
 
 function gotoHighscores(){
