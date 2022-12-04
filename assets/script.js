@@ -103,7 +103,7 @@ var highscoreScreen = document.querySelector("#highScores");
 function clearPage(){
     for(let elem of document.body.children){
         if(!(elem.getAttribute("id") === "highScores")){
-            
+            elem.style.display = "none";
         }
     }
 }
@@ -160,6 +160,7 @@ function loadNextQuestion(){
 
 function gotoHighscores(){
     clearPage();
+    highscoreScreen.removeAttribute("style");
 }
 
 //main logic
