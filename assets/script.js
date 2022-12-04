@@ -140,6 +140,7 @@ function timerPause(){
 //This is what kicks everything off
 function beginQuiz(event){
     event.preventDefault();
+    timeLeft = 75;
     hideShowStart();
     startTimer();
     loadNextQuestion();
@@ -151,7 +152,6 @@ function loadNextQuestion(){
     let lastQuestion = questions.length <= 1;
     let index = Math.floor(Math.random() * (questions.length - 1));
     let q = lastQuestion ? questions[0] : questions[index];
-    console.log(lastQuestion + " ," + index + " ," + q);
     //moves the question out of the array if it's the last one
     if(!lastQuestion){
         let tempQ = questions[0];
@@ -195,7 +195,12 @@ function loadNextQuestion(){
         event.preventDefault();
         if(event.target.localName === "button"){
             if(event.target.className === "correct"){
-
+                loadNextQuestion();
+                this.removeEventListener();
+            }else{
+                loadNextQuestion();
+                timeLeft -= 15;
+                this.removeEventListener();
             }
         }
     });
@@ -204,7 +209,6 @@ function loadNextQuestion(){
 function enterHighScore(){
     timerPause();
     clearPage();
-    timeLeft = 75;
     endScreen.removeAttribute("style");
     endScreen.querySelector(".highscore").textContent = timeLeft;
 
