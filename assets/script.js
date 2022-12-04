@@ -92,9 +92,11 @@ var questions = [question1, question2, question3, question4, question5, question
 ////////////////////////////////////////////////////
 
 //variables
-var highScoreButton = document.querySelector(".highScoresNTime > a");
+var highScoreButton = document.querySelector("#highScoresNTime > a");
 var sButton = document.querySelector("#startButton");
-console.log(highScoreButton);
+var startScreen = document.querySelector("#start");
+var questionSection = document.querySelector("#question");
+var endScreen = document.querySelector("#end");
 
 //functions
 function clearPage(){
@@ -105,15 +107,34 @@ function refillQuestions(){
     questions = [question1, question2, question3, question4, question5, question6];
 }
 
+function hideShowStart(){
+    startScreen.hasAttribute("style") ? startScreen.removeAttribute("style") : startScreen.style.display = "none";
+}
+
 function beginQuiz(event){
     event.preventDefault();
-    document.querySelector(".start").innerHTML = '';
+    hideShowStart();
     console.log("cleared");
 
 }
 
 function loadNextQuestion(){
+    //choose question
+    let lastQuestion = questions.length <= 1;
+    let index = Math.random() * (questions.length - 1);
+    let q = lastQuestion ? questions[0] : questions[index];
+    if(!lastQuestion){
+        let tempQ = questions[0];
+        questions[0] = q;
+        questions[index] = tempQ;
+        questions.shift();
+    }
 
+    //first reset
+    questionSection.innerHTML = "";
+    //create the html to put in
+    document.createElement("h1");
+    document.createElement();
 }
 
 function gotoHighscores(){

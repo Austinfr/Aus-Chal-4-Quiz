@@ -1,6 +1,6 @@
 
 
-.highScoresNTime{
+#highScoresNTime{
     margin: 0;
     padding: 0;
     font-size: 20px;
@@ -10,12 +10,11 @@
 }
 
 a{
-    border: 2px green solid;
     text-decoration: underline;
 }
 
-.start,
-.question{
+#start,
+#question{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -24,6 +23,7 @@ a{
 }
 
 .answerButton{
+
     
 }
 
