@@ -142,7 +142,7 @@ function updateTimer(){
     timeCounter.textContent = timeLeft;
 }
 
-function timerPause(){
+function pauseTimer(){
     clearInterval(timerId);
 }
 
@@ -216,7 +216,7 @@ function wrongAnswer(){
 }
 
 function enterHighScore(){
-    timerPause();
+    pauseTimer();
     clearPage();
     inMiddleOfQuiz = false;
     questionSection.innerHTML = "";
@@ -227,7 +227,7 @@ function enterHighScore(){
 
 function gotoHighscores(event){
     event.preventDefault();
-    timerPause();
+    pauseTimer();
     clearPage();
     highscoreScreen.removeAttribute("style");
 }
