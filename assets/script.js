@@ -139,7 +139,7 @@ function startTimer(){
             timeLeft--;
             updateTimer();
         }else{
-            enterHighScore();
+            enterHighScore(true);
         }
     }, 1000);
 }
@@ -155,17 +155,27 @@ function pauseTimer(){
 //This is what kicks everything off
 function beginQuiz(event){
     event.preventDefault();
+    //if you're coming back for a second time
+    if(questions.length === 0){
+        refillQuestions();
+    }
 
     //sets up the time
     timeLeft = questions.length * 15;
+    updateTimer();
     //hides the startscreen starts the timer and the question
     hideShow(startScreen);
     startTimer();
     loadNextQuestion();
     inMiddleOfQuiz = true;
+
 }
 
 function loadNextQuestion(){
+    //if it's hidden make it not hidden
+    if(questionSection.hasAttribute("style")){
+        questionSection.removeAttribute("style")
+    }
     //chooses a question from the list and then removes it
     let lastQuestion = questions.length <= 1;
     let index = Math.floor(Math.random() * questions.length);
@@ -176,6 +186,8 @@ function loadNextQuestion(){
         questions[0] = q;
         questions[index] = tempQ;
         questions.shift();
+    }else{
+        questions.pop();
     }
 
     //first reset inner content so I can set it to what I want
@@ -212,9 +224,9 @@ function loadNextQuestion(){
         event.preventDefault();
         if(event.target.matches("button")){
             if(event.target.classList.contains("correct")){
-                lastQuestion ? enterHighScore() : loadNextQuestion();
+                lastQuestion ? enterHighScore(true) : loadNextQuestion();
             }else{
-                lastQuestion ? enterHighScore() : wrongAnswer();
+                lastQuestion ? enterHighScore(false) : wrongAnswer();
             }
         }
     });
@@ -230,7 +242,10 @@ function wrongAnswer(){
     updateTimer();
 }
 
-function enterHighScore(){
+function enterHighScore(wasCorrect){
+    if(!wasCorrect){
+        timeLeft -= 15;
+    }
     if(timeLeft < 0){
         timeLeft = 0;
     }
@@ -270,6 +285,7 @@ function submitUserScore(event){
     if(!(userName.value === "")){
         users.push(userName.value + " - " + timeLeft);
         localStorage.setItem("Users", JSON.stringify(users));
+        userName.value = "";
         clearPage();
         loadHighscores();
     }
@@ -291,13 +307,14 @@ function returnToQuestions(){
 
 function returnToStart(event){
     event.preventDefault();
-    if(questions.length === 0){
-        refillQuestions();
-    }
-    console.log();
     clearPage();
     hideShow(navBar);
-    inMiddleOfQuiz ? returnToQuestions() : hideShow(startScreen);
+    if(inMiddleOfQuiz){
+        returnToQuestions()
+    }else{
+        hideShow(startScreen);
+        timeCounter.textContent = 0;
+    }
 }
 
 //main logic
