@@ -24,12 +24,27 @@ a{
     margin: 2%;
 }
 
+#question{
+    width: 80%;
+    align-content: center;
+}
+
+.questionGroup{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .answerButton{
+    width: fit-content;
+    margin-bottom: 2%;
+    padding: 1%;
+    border-radius: 5px;
     background-color: rgba(138, 43, 226, 0.9);
-    
+    font-size: 15px;
+    color: white;
 }
 
 .answerButton:hover{
     background-color: rgba(138, 43, 226, 0.6);
-
 }

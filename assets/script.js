@@ -127,6 +127,7 @@ function hideShowStart(){
     startScreen.hasAttribute("style") ? startScreen.removeAttribute("style") : startScreen.setAttribute("style", "display: none");
 }
 
+//starts the timer to tick down every second
 function startTimer(){
     timerId = setInterval(function(){
         if(timeLeft > 0){
@@ -137,11 +138,11 @@ function startTimer(){
         }
     }, 1000);
 }
-
+//updates when it ticks down or a question was answered incorrectly
 function updateTimer(){
     timeCounter.textContent = timeLeft;
 }
-
+//pauses the timer to goto the highscores
 function pauseTimer(){
     clearInterval(timerId);
 }
@@ -189,14 +190,20 @@ function loadNextQuestion(){
     qGroup.appendChild(option2);
     qGroup.appendChild(option3);
     qGroup.appendChild(option4);
+
+    qGroup.classList.add("questionGroup")
     //assigns a class of correct to the answer of the question
     qGroup.childNodes[q.correct - 1].className = "correct";
+
+    for(let elem of qGroup.childNodes){
+        elem.classList.add("answerButton");
+    }
 
     //add the logic of the listener to either take us to the next question or finalize the score
     qGroup.addEventListener("click", function(){
         event.preventDefault();
         if(event.target.localName === "button"){
-            if(event.target.className === "correct"){
+            if(event.target.classList.contains("correct")){
                 lastQuestion ? enterHighScore() : loadNextQuestion();
             }else{
                 lastQuestion ? enterHighScore() : wrongAnswer();
@@ -216,6 +223,9 @@ function wrongAnswer(){
 }
 
 function enterHighScore(){
+    if(timeLeft < 0){
+        timeLeft = 0;
+    }
     pauseTimer();
     clearPage();
     inMiddleOfQuiz = false;
