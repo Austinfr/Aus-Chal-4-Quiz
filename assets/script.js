@@ -96,14 +96,16 @@ var questions = [question1, question2, question3, question4, question5, question
 //a variable for each section of content I'd like to work with
 var highScoreButton = document.querySelector("#timeBar > a");
 var timeCounter = document.querySelector("#timeBar > .time");
-var sButton = document.querySelector("#startButton");
+var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#start");
 var questionSection = document.querySelector("#question");
 var endScreen = document.querySelector("#end");
 var highscoreScreen = document.querySelector("#highScores");
+var userName = endScreen.querySelector('input[type="text"]');
+var submitButton = endScreen.querySelector('input[type="submit"]');
 
 var timerId = null;
-var timeLeft = 75;
+var timeLeft = null;
 
 //functions
 //hides everything
@@ -126,11 +128,16 @@ function hideShowStart(){
 function startTimer(){
     timerId = setInterval(function(){
         if(timeLeft > 0){
-            timeCounter.textContent = timeLeft--;
+            timeLeft--;
+            updateTimer();
         }else{
             enterHighScore();
         }
     }, 1000);
+}
+
+function updateTimer(){
+    timeCounter.textContent = timeLeft;
 }
 
 function timerPause(){
@@ -140,7 +147,7 @@ function timerPause(){
 //This is what kicks everything off
 function beginQuiz(event){
     event.preventDefault();
-    timeLeft = 75;
+    timeLeft = questions.length * 15;
     hideShowStart();
     startTimer();
     loadNextQuestion();
@@ -180,35 +187,36 @@ function loadNextQuestion(){
     qGroup.appendChild(option2);
     qGroup.appendChild(option3);
     qGroup.appendChild(option4);
-    //assign either the class correct or wrong depending on the answer
-    for(let x = 0; x < 4; x++){
-        if(x == q.correct - 1){
-            qGroup.childNodes[x].className = "correct";
-        }else{
-            qGroup.childNodes[x].className = "wrong";
-        }
-    }
+    //assigns a class of correct to the answer of the question
+    qGroup.childNodes[q.correct - 1].className = "correct";
 
-
-    //add the logic
+    //add the logic of the listener to either take us to the next question or finalize the score
     qGroup.addEventListener("click", function(){
         event.preventDefault();
         if(event.target.localName === "button"){
             if(event.target.className === "correct"){
-                loadNextQuestion();
-                this.removeEventListener();
+                lastQuestion ? enterHighScore() : loadNextQuestion();
             }else{
-                loadNextQuestion();
-                timeLeft -= 15;
-                this.removeEventListener();
+                lastQuestion ? enterHighScore() : wrongAnswer();
             }
         }
     });
+
+    //adds them to the webpage
+    questionSection.append(qAsked);
+    questionSection.append(qGroup);
+}
+
+function wrongAnswer(){
+    loadNextQuestion(); 
+    timeLeft -= 15;
+    updateTimer();
 }
 
 function enterHighScore(){
     timerPause();
     clearPage();
+    questionSection.innerHTML = "";
     endScreen.removeAttribute("style");
     endScreen.querySelector(".highscore").textContent = timeLeft;
 
@@ -222,5 +230,5 @@ function gotoHighscores(event){
 }
 
 //main logic
-sButton.addEventListener("click", beginQuiz);
+startButton.addEventListener("click", beginQuiz);
 highScoreButton.addEventListener("click", gotoHighscores);
