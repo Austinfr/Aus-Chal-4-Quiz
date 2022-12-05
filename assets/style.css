@@ -1,4 +1,11 @@
+*{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 50px;
+}
 
+body{
+    padding: 10px;
+}
 
 #timeBar{
     margin: 0;
@@ -24,6 +31,23 @@ a{
     margin: 2%;
 }
 
+.button{
+    width: fit-content;
+    margin: 1%;
+    padding: .8%;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(138, 43, 226, 0.9);
+    font-size: 15px;
+    text-shadow: 2px 2px 3px rgb(32, 21, 36);
+    box-shadow: 0 0 10px 1px rgb(73, 64, 77);
+    color: white;
+}
+
+.button:hover{
+    background-color: rgba(138, 43, 226, 0.6);
+}
+
 #question{
     width: 80%;
     align-content: center;
@@ -35,16 +59,15 @@ a{
     flex-direction: column;
 }
 
-.answerButton{
-    width: fit-content;
-    margin-bottom: 2%;
-    padding: 1%;
-    border-radius: 5px;
-    background-color: rgba(138, 43, 226, 0.9);
-    font-size: 15px;
-    color: white;
+.submit{
+    display: flex;
+    white-space: nowrap;
+    width: 80%;
+    padding:2%;
+    align-items: center;
+    justify-content: center;
 }
 
-.answerButton:hover{
-    background-color: rgba(138, 43, 226, 0.6);
+#scoreList{
+    list-style: none;
 }

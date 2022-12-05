@@ -94,8 +94,9 @@ var questions = [question1, question2, question3, question4, question5, question
 
 //variables
 //a variable for each section of content I'd like to work with
-var highScoreButton = document.querySelector("#timeBar > a");
-var timeCounter = document.querySelector("#timeBar > .time");
+var navBar = document.querySelector("#timeBar");
+var highScoreButton = navBar.querySelector("a");
+var timeCounter = navBar.querySelector("#time");
 var startButton = document.querySelector("#startButton");
 var startScreen = document.querySelector("#start");
 var questionSection = document.querySelector("#question");
@@ -103,11 +104,15 @@ var endScreen = document.querySelector("#end");
 var highscoreScreen = document.querySelector("#highScores");
 var userName = endScreen.querySelector('input[type="text"]');
 var submitButton = endScreen.querySelector('input[type="submit"]');
+var scoresList = highscoreScreen.querySelector("#scoreList");
+var backButton = highscoreScreen.querySelector("#goBack");
+var clearHighScores = highscoreScreen.querySelector("#clear");
 
 var timerId = null;
 var timeLeft = null;
 
 var inMiddleOfQuiz = false;
+var users = [];
 
 //functions
 //hides everything
@@ -121,10 +126,10 @@ function refillQuestions(){
     questions = [question1, question2, question3, question4, question5, question6];
 }
 
-//shows or hides the start section depending on what it currently is
+//shows or hides the element given depending on what it currently is
 //if hidden it shows
-function hideShowStart(){
-    startScreen.hasAttribute("style") ? startScreen.removeAttribute("style") : startScreen.setAttribute("style", "display: none");
+function hideShow(element){
+    element.hasAttribute("style") ? element.removeAttribute("style") : element.setAttribute("style", "display: none");
 }
 
 //starts the timer to tick down every second
@@ -150,8 +155,11 @@ function pauseTimer(){
 //This is what kicks everything off
 function beginQuiz(event){
     event.preventDefault();
+
+    //sets up the time
     timeLeft = questions.length * 15;
-    hideShowStart();
+    //hides the startscreen starts the timer and the question
+    hideShow(startScreen);
     startTimer();
     loadNextQuestion();
     inMiddleOfQuiz = true;
@@ -160,7 +168,7 @@ function beginQuiz(event){
 function loadNextQuestion(){
     //chooses a question from the list and then removes it
     let lastQuestion = questions.length <= 1;
-    let index = Math.floor(Math.random() * (questions.length - 1));
+    let index = Math.floor(Math.random() * questions.length);
     let q = lastQuestion ? questions[0] : questions[index];
     //moves the question out of the array if it's the last one
     if(!lastQuestion){
@@ -190,19 +198,19 @@ function loadNextQuestion(){
     qGroup.appendChild(option2);
     qGroup.appendChild(option3);
     qGroup.appendChild(option4);
-
+    //adds a container class for the answers
     qGroup.classList.add("questionGroup")
     //assigns a class of correct to the answer of the question
     qGroup.childNodes[q.correct - 1].className = "correct";
 
     for(let elem of qGroup.childNodes){
-        elem.classList.add("answerButton");
+        elem.classList.add("button");
     }
 
     //add the logic of the listener to either take us to the next question or finalize the score
     qGroup.addEventListener("click", function(){
         event.preventDefault();
-        if(event.target.localName === "button"){
+        if(event.target.matches("button")){
             if(event.target.classList.contains("correct")){
                 lastQuestion ? enterHighScore() : loadNextQuestion();
             }else{
@@ -232,16 +240,69 @@ function enterHighScore(){
     questionSection.innerHTML = "";
     endScreen.removeAttribute("style");
     endScreen.querySelector(".highscore").textContent = timeLeft;
-
 }
 
 function gotoHighscores(event){
     event.preventDefault();
     pauseTimer();
     clearPage();
+    loadHighscores();
+}
+
+function loadHighscores(){
+    //checks if there're any stored
+    var storedUsers = JSON.parse(localStorage.getItem("Users"));
+    if(storedUsers !== null){
+        users = storedUsers;
+    }
+
     highscoreScreen.removeAttribute("style");
+    scoresList.innerHTML = "";
+    for(let user of users){
+        let listItem = document.createElement("li");
+        listItem.textContent = user;
+        scoresList.append(listItem);
+    }
+}
+
+function submitUserScore(event){
+    event.preventDefault();
+    if(!(userName.value === "")){
+        users.push(userName.value + " - " + timeLeft);
+        localStorage.setItem("Users", JSON.stringify(users));
+        clearPage();
+        loadHighscores();
+    }
+}
+
+function clearStoredScores(event){
+    event.preventDefault();
+    if(users.length > 0){
+        users = [];
+        localStorage.setItem("Users", JSON.stringify(users));
+        loadHighscores();
+    }
+}
+
+function returnToQuestions(){
+    hideShow(questionSection);
+    startTimer();
+}
+
+function returnToStart(event){
+    event.preventDefault();
+    if(questions.length === 0){
+        refillQuestions();
+    }
+    console.log();
+    clearPage();
+    hideShow(navBar);
+    inMiddleOfQuiz ? returnToQuestions() : hideShow(startScreen);
 }
 
 //main logic
 startButton.addEventListener("click", beginQuiz);
 highScoreButton.addEventListener("click", gotoHighscores);
+submitButton.addEventListener("click", submitUserScore);
+backButton.addEventListener("click", returnToStart);
+clearHighScores.addEventListener("click", clearStoredScores);

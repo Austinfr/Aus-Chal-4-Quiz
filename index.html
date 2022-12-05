@@ -9,11 +9,11 @@
 </head>
 <body>
 
-    <div id="timeBar"><a>View Highscores</a><span class="time">0</span></div>
+    <div id="timeBar"><a>View Highscores</a><span id="time">0</span></div>
     <!-- Main question and highscore display -->
     <div id="start">
         <h1>This is a quick javscript quiz</h1>
-        <button id="startButton">Begin quiz</button>
+        <button id="startButton" class="button">Begin quiz</button>
     </div>
 
     <div id="question">
@@ -26,13 +26,16 @@
         <div class="submit">
             <label for="user">Enter your name:</label>
             <input type="text" name="user"/>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Submit" class="button"/>
         </div>
 
     </div>
 
     <div id="highScores" style="display: none;">
-        
+        <h1>Highscores</h1>
+        <ul id="scoreList"></ul>
+        <button id="goBack" class="button">Go Back</button>
+        <button id="clear" class="button">Clear Highscores</button>
     </div>
     
     <script src="./assets/script.js"></script>
