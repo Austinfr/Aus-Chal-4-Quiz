@@ -107,6 +107,8 @@ var submitButton = endScreen.querySelector('input[type="submit"]');
 var timerId = null;
 var timeLeft = null;
 
+var inMiddleOfQuiz = false;
+
 //functions
 //hides everything
 function clearPage(){
@@ -151,7 +153,7 @@ function beginQuiz(event){
     hideShowStart();
     startTimer();
     loadNextQuestion();
-
+    inMiddleOfQuiz = true;
 }
 
 function loadNextQuestion(){
@@ -216,6 +218,7 @@ function wrongAnswer(){
 function enterHighScore(){
     timerPause();
     clearPage();
+    inMiddleOfQuiz = false;
     questionSection.innerHTML = "";
     endScreen.removeAttribute("style");
     endScreen.querySelector(".highscore").textContent = timeLeft;
