@@ -109,11 +109,11 @@ var backButton = highscoreScreen.querySelector("#goBack");
 var clearHighScores = highscoreScreen.querySelector("#clear");
 var answerValiditySection = document.querySelector("#correctOrNot");
 
-var timerId = null;
-var timeLeft = null;
+var timerId = null; //the Id returned by setInterval
+var timeLeft = null; //Time left for the quiz and the score
 
-var inMiddleOfQuiz = false;
-var users = [];
+var inMiddleOfQuiz = false; //when the user moves to the highscore section
+var users = []; //stores the scores and names associated
 
 //functions
 //sets the attribute of display none for each of the main elements
@@ -229,15 +229,20 @@ function loadNextQuestion(){
     qGroup.addEventListener("click", function(){
         event.preventDefault();
         if(event.target.matches("button")){
+            //checks if the user got it correct or not
             if(event.target.classList.contains("correct")){
-                lastQuestion ? enterHighScore(true) : correctAnswer();
+                gotQuestion(true);
             }else{
-                lastQuestion ? enterHighScore(false) : wrongAnswer();
+                timeLeft -= 15;
+                updateTimer();
+                gotQuestion(false);
             }
+            //depending on if it's the last question or not
+            //it will either load another or go to enter the highscore
             if(!lastQuestion){
                 loadNextQuestion();
             }else{
-
+                enterHighScore();
             }
         }
     });
@@ -246,21 +251,11 @@ function loadNextQuestion(){
     questionSection.append(qAsked);
     questionSection.append(qGroup);
 }
-//if the answer was correct 
-function correctAnswer(){
-    gotQuestion(true);
-}
-//if the wrong answer is select 15 seconds are deducted
-function wrongAnswer(){
-    loadNextQuestion(); 
-    timeLeft -= 15;
-    updateTimer();
-    gotQuestion(false);
-}
 //displays a little thing at the bottom depending on how you answered the question
 function gotQuestion(wasCorrect){
     answerValiditySection.innerHTML="";
-    answerValiditySection.setAttribute("opacity", "0.6");
+    //sets it to light and skewed sorta 
+    answerValiditySection.setAttribute("opacity", "0.4");
     answerValiditySection.setAttribute("font-style", "italic");
     answerValiditySection.append(document.createElement("hr"));
     
