@@ -17,7 +17,8 @@
 
 The goal of this challenge is to create a quiz about javascript to show understanding of DOM manipulation by hiding under the hood and using javascript code to manipulate each step of the users experience to create an interactive puzzle. 
 
-This is what it should resemble
+This is what it should resemble:
+
 ![Gif of a website I based it off of](./assets/images/04-web-apis-homework-demo.gif)
 
 ## Installation
