@@ -302,9 +302,11 @@ function loadHighscores(){
     if(storedUsers !== null){
         users = storedUsers;
     }
-
+    //shows the highscores
     highscoreScreen.removeAttribute("style");
+    //clears it to put in all stored scores
     scoresList.innerHTML = "";
+    //goes through the list creating a list element for each and displaying it
     for(let user of users){
         let listItem = document.createElement("li");
         listItem.textContent = user;
