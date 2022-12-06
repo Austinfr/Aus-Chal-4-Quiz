@@ -69,5 +69,16 @@ a{
 }
 
 #scoreList{
-    list-style: none;
+    list-style: decimal;
+}
+
+.scoreListItem{
+    
+    background-color: rgba(189, 130, 240, 0.8);
+    width: fit-content;
+    margin:5px;
+}
+
+.scoreListItem:nth-child(even){
+    background-color: rgba(162, 76, 236, 0.8);
 }

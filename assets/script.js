@@ -38,7 +38,7 @@
     4.i = 50
 
 */
-
+//can add more questions here
 const question1 = {
     question: "Which html tag does javascript go inside?",
     optionOne: "<javascript>",
@@ -107,6 +107,7 @@ var submitButton = endScreen.querySelector('input[type="submit"]');
 var scoresList = highscoreScreen.querySelector("#scoreList");
 var backButton = highscoreScreen.querySelector("#goBack");
 var clearHighScores = highscoreScreen.querySelector("#clear");
+var answerValiditySection = document.querySelector("#correctOrNot");
 
 var timerId = null;
 var timeLeft = null;
@@ -115,13 +116,15 @@ var inMiddleOfQuiz = false;
 var users = [];
 
 //functions
-//hides everything
+//sets the attribute of display none for each of the main elements
 function clearPage(){
     for(let elem of document.body.children){
-        elem.setAttribute("style", "display: none");
+        if(elem.id !== "correctOrNot"){
+            elem.setAttribute("style", "display: none");
+        }
     }
 }
-
+//puts the questions back in the array
 function refillQuestions(){
     questions = [question1, question2, question3, question4, question5, question6];
 }
@@ -134,7 +137,9 @@ function hideShow(element){
 
 //starts the timer to tick down every second
 function startTimer(){
+    //sets an interval for every 1000 milliseconds
     timerId = setInterval(function(){
+        //game over case
         if(timeLeft > 0){
             timeLeft--;
             updateTimer();
@@ -170,7 +175,8 @@ function beginQuiz(event){
     inMiddleOfQuiz = true;
 
 }
-
+//loads the next question from the array by selecting a random one within it and then moving it out of the array
+//sets up the html to be displayed based on the function and loads it to the page
 function loadNextQuestion(){
     //if it's hidden make it not hidden
     if(questionSection.hasAttribute("style")){
@@ -214,7 +220,7 @@ function loadNextQuestion(){
     qGroup.classList.add("questionGroup")
     //assigns a class of correct to the answer of the question
     qGroup.childNodes[q.correct - 1].className = "correct";
-
+    //adds the button class to each of the options for styling
     for(let elem of qGroup.childNodes){
         elem.classList.add("button");
     }
@@ -224,9 +230,14 @@ function loadNextQuestion(){
         event.preventDefault();
         if(event.target.matches("button")){
             if(event.target.classList.contains("correct")){
-                lastQuestion ? enterHighScore(true) : loadNextQuestion();
+                lastQuestion ? enterHighScore(true) : correctAnswer();
             }else{
                 lastQuestion ? enterHighScore(false) : wrongAnswer();
+            }
+            if(!lastQuestion){
+                loadNextQuestion();
+            }else{
+
             }
         }
     });
@@ -235,17 +246,38 @@ function loadNextQuestion(){
     questionSection.append(qAsked);
     questionSection.append(qGroup);
 }
-
+//if the answer was correct 
+function correctAnswer(){
+    gotQuestion(true);
+}
+//if the wrong answer is select 15 seconds are deducted
 function wrongAnswer(){
     loadNextQuestion(); 
     timeLeft -= 15;
     updateTimer();
+    gotQuestion(false);
 }
-
-function enterHighScore(wasCorrect){
-    if(!wasCorrect){
-        timeLeft -= 15;
+//displays a little thing at the bottom depending on how you answered the question
+function gotQuestion(wasCorrect){
+    answerValiditySection.innerHTML="";
+    answerValiditySection.setAttribute("opacity", "0.6");
+    answerValiditySection.setAttribute("font-style", "italic");
+    answerValiditySection.append(document.createElement("hr"));
+    
+    let text = document.createElement("p");
+    if(wasCorrect){
+        text.innerText = "Correct!";
+    }else{
+        text.innerText = "Wrong!";
     }
+    answerValiditySection.append(text);
+    let tempId = setInterval(function(){
+        answerValiditySection.innerHTML = "";
+        clearInterval(tempId);
+    }, 400);
+}
+//goes to the enter highscore screen from the last question
+function enterHighScore(){
     if(timeLeft < 0){
         timeLeft = 0;
     }
@@ -256,14 +288,14 @@ function enterHighScore(wasCorrect){
     endScreen.removeAttribute("style");
     endScreen.querySelector(".highscore").textContent = timeLeft;
 }
-
+//when the highscore tag or button is pressed
 function gotoHighscores(event){
     event.preventDefault();
     pauseTimer();
     clearPage();
     loadHighscores();
 }
-
+//puts the highscores that are stored to the webpage
 function loadHighscores(){
     //checks if there're any stored
     var storedUsers = JSON.parse(localStorage.getItem("Users"));
@@ -276,12 +308,14 @@ function loadHighscores(){
     for(let user of users){
         let listItem = document.createElement("li");
         listItem.textContent = user;
+        listItem.classList.add("scoreListItem");
         scoresList.append(listItem);
     }
 }
-
+//when the submit button is clicked this uploads the highscore with the username
 function submitUserScore(event){
     event.preventDefault();
+    //if the field is empty it won't submit
     if(!(userName.value === "")){
         users.push(userName.value + " - " + timeLeft);
         localStorage.setItem("Users", JSON.stringify(users));
@@ -290,7 +324,7 @@ function submitUserScore(event){
         loadHighscores();
     }
 }
-
+//when the clear scores button is pressed
 function clearStoredScores(event){
     event.preventDefault();
     if(users.length > 0){
@@ -299,12 +333,12 @@ function clearStoredScores(event){
         loadHighscores();
     }
 }
-
+//for when you go back from the highscores during the middle of a quiz
 function returnToQuestions(){
     hideShow(questionSection);
     startTimer();
 }
-
+//functionality for the button labeled go back
 function returnToStart(event){
     event.preventDefault();
     clearPage();
@@ -317,7 +351,7 @@ function returnToStart(event){
     }
 }
 
-//main logic
+//all the button listeners
 startButton.addEventListener("click", beginQuiz);
 highScoreButton.addEventListener("click", gotoHighscores);
 submitButton.addEventListener("click", submitUserScore);
